@@ -1,0 +1,61 @@
+server:
+  port: 8761 # Puerto estandar para Eureka
+eureka:
+  client:
+    register-with-eureka: false # No se registra a si mismo
+    fetch-registry: false # No busca el registro de otros servicios, el es el registro
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #Opcional, util cuando hay multiples instancias de Eureka
+  server:
+    wait-time-in-ms-when-sync-empty: 5 # Evita esperas largas en el arranque en desarrollo
+    enable-self-preservation: false # Desactiva el modo de autopreservacion en desarrollo
+    eviction-interval-timer-in-ms: 60000 # Intervalo para eliminar instancias expiradas (60 segundos)
+    renewal-percent-threshold: 0.85 # Umbral de renovacion para activar autopreservacion
+    max-threads-for-status-replication: 5 # Maximo hilos para replicacion de estado
+    max-threads-for-peer-replication: 20 # Maximo hilos para replicacion entre pares
+    response-cache-auto-expiration-in-seconds: 180 # Expiracion automatica de cache de respuestas
+    response-cache-update-interval-ms: 30000 # Intervalo de actualizacion de cache (30 segundos)
+    use-read-only-response-cache: true # Usa cache de solo lectura para mejor rendimiento
+    delta-retention-timer-interval-in-ms: 30000 # Intervalo para limpiar informacion delta
+    retention-time-in-m-s-in-delta-queue: 180000 # Tiempo de retencion en cola delta
+  instance:
+    hostname: localhost # Nombre del host del servidor Eureka
+    prefer-ip-address: false # Prefiere hostname sobre IP
+    lease-renewal-interval-in-seconds: 30 # Intervalo de renovacion del lease
+    lease-expiration-duration-in-seconds: 90 # Duracion de Expiracion del lease
+
+# Configuraciones de seguridad y monitoreo
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics # Endpoints expuestos para monitoreo
+      base-path: /actuator # Ruta base para endpoints de actuator
+  endpoint:
+    health:
+      show-details: when-authorized # Muestra detalles de salud solo cuando autorizado
+#  security:
+#    enabled: true # Habilita seguridad en endpoints de management
+
+# Configuracion de logging
+logging:
+  level:
+    com.netflix.eureka: INFO # Nivel de log para Eureka
+    com.netflix.discovery: INFO # Nivel de log para Discovery
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # Patron de log para consola
+
+# Configuracion de Spring Security (descomenta si usas autenticacion)
+# spring:
+#   security:
+#     user:
+#       name: admin # Usuario para acceso al dashboard
+#       password: ${EUREKA_PASSWORD:admin123} # Contrase?a desde variable de entorno
+spring:
+  application:
+    name: eureka-server
+  security:
+    user:
+      name: ${EUREKA_USER:eureka}
+      password: ${EUREKA_PASSWORD:password}
+#       roles: ADMIN # Rol del usuario

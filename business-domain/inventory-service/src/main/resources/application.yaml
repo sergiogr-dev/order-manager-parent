@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: inventory-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  datasource:
+    url: jdbc:postgresql://${MS_INVENTORY:172.21.217.63}:5431/ms_inventory
+    username: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:strongpostgrespw}
+server:
+  port: 8084
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    #      defaultZone: http://${EUREKA_USER:eureka}:${EUREKA_PASSWORD:password}@localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    healthcheck:
+      enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
