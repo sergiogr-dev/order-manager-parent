@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: orders-service
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
+#  datasource:
+#    url: jdbc:postgresql://${MS_ORDERS:172.21.217.63}:3306/ms_orders
+#    username: ${PG_USERNAME:appuser}
+#    password: ${PG_PASSWORD:stronguserpw}
+  r2dbc:
+    url: r2dbc:postgresql://${MS_ORDERS:172.21.217.63}:5435/ms_orders
+    username: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:strongpostgrespw}
+
+  flyway:
+    url: jdbc:postgresql://${MS_ORDERS:172.21.217.63}:5435/ms_orders
+    user: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:strongpostgrespw}
+    locations: classpath:db/migration
+server:
+  port: 8082
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+#      defaultZone: http://${EUREKA_USER:eureka}:${EUREKA_PASSWORD:password}@localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    healthcheck:
+      enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
