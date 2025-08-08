@@ -1,10 +1,10 @@
 server:
-  port: 8080 # Puerto donde el API Gateway escuchará las peticiones.
-spring: # Bloque de configuración de Spring.
+  port: 8080 # Puerto donde el API Gateway escucharï¿½ las peticiones.
+spring: # Bloque de configuracion de Spring.
   application:
-    name: api-gateway # Nombre de la aplicación, usado para registrarse en Eureka.
-  cloud: # Configuración específica de Spring Cloud.
-    gateway: # Configuración de Spring Cloud Gateway.
+    name: api-gateway # Nombre de la aplicacion, usado para registrarse en Eureka.
+  cloud: # Configuracion especifica de Spring Cloud.
+    gateway: # Configuracion de Spring Cloud Gateway.
       server:
         webflux:
           discovery:
@@ -15,18 +15,18 @@ spring: # Bloque de configuración de Spring.
             - SaveSession
             - TokenRelay
           routes:
-            - id: order-service # ID único de la ruta.
-              uri: lb://order-service # URI de destino. "lb://" indica balanceo de carga con Eureka para el servicio "order-service".
-              predicates: # Condiciones para que una petición coincida con esta ruta.
-                - Path=/api/v1/orders/** # Si la URL de la petición empieza con "/orders/", se enruta a "order-service".
-            - id: product-service # ID único de la ruta.
-              uri: lb://product-service # URI de destino para el servicio "product-service".
+            - id: orders-service # ID unico de la ruta.
+              uri: lb://orders-service # URI de destino. "lb://" indica balanceo de carga con Eureka para el servicio "order-service".
+              predicates: # Condiciones para que una peticion coincida con esta ruta.
+                - Path=/api/v1/orders/** # Si la URL de la peticion empieza con "/orders/", se enruta a "order-service".
+            - id: products-service # ID unico de la ruta.
+              uri: lb://products-service # URI de destino para el servicio "product-service".
               predicates:
-                - Path=/api/v1/products/** # Si la URL de la petición empieza con "/products/", se enruta a "product-service".
-            - id: inventory-service # ID único de la ruta.
+                - Path=/api/v1/products/** # Si la URL de la peticion empieza con "/products/", se enruta a "product-service".
+            - id: inventory-service # ID unico de la ruta.
               uri: lb://inventory-service # URI de destino para el servicio "inventory-service".
               predicates:
-                - Path=/api/v1/inventory/** # Si la URL de la petición empieza con "/inventory/", se enruta a "inventory-service".
+                - Path=/api/v1/inventory/** # Si la URL de la peticion empieza con "/inventory/", se enruta a "inventory-service".
             - id: eureka-server
               uri: http://localhost:8761
               predicates:
@@ -42,7 +42,7 @@ spring: # Bloque de configuración de Spring.
       client:
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_SERVER:http://localhost:8181/realms/microservices-realm}
+            issuer-uri: ${KEYCLOAK_SERVER:http://localhost:8181/realms/order-manager-realm}
         registration:
           api-gateway: # Nombre con el que se registra el cliente en el gateway
             provider: ${KC_PROVIDER:keycloak}
@@ -51,19 +51,19 @@ spring: # Bloque de configuración de Spring.
             client-id: ${KC_CLIENT_ID:api-gateway}
             client-secret: ${KC_CLIENT_SECRET:KwBDlTjq25ukor7huGFG7itzFXNwQdPR}
             authorization-grant-type: ${$KC_AUTH_GRANT_TYPE:authorization_code}
-            redirect-uri: ${baseUrl:http://localhost:8080}/login/oauth2/code/keycloak
+            redirect-uri: ${baseUrl:http://localhost:8080}/login/oauth2/code/api-gateway
       resourceserver:
         jwt:
-          # URL que proporciona el conjunto de claves públicas que Keycloak utiliza para verificar la firma de los tokens JWT emitidos
+          # URL que proporciona el conjunto de claves pï¿½blicas que Keycloak utiliza para verificar la firma de los tokens JWT emitidos
           jwk-set-uri: "http://localhost:8181/realms/order-manager-realm/protocol/openid-connect/certs" # jwks: (JSON Web Key Set)
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka # URL de tu servidor Eureka (asegúrate de que este corriendo)
-#      defaultZone: http://${EUREKA_USER:eureka}:${EUREKA_PASSWORD:password}@localhost:8761/eureka # URL de tu servidor Eureka (asegúrate de que est? corriendo)
+#      defaultZone: http://localhost:8761/eureka # URL de tu servidor Eureka (asegï¿½rate de que este corriendo)
+      defaultZone: http://${EUREKA_USER:eureka}:${EUREKA_PASSWORD:password}@localhost:8761/eureka # URL de tu servidor Eureka (asegï¿½rate de que est? corriendo)
     fetch-registry: true # Indica al Gateway que recupere el registro de servicios
-    register-with-eureka: true # El Gateway también se registra en Eureka (útil para monitoreo)
+    register-with-eureka: true # El Gateway tambiï¿½n se registra en Eureka (ï¿½til para monitoreo)
   instance:
     hostname: localhost # Nombre del host de esta instancia de Gateway
-    prefer-ip-address: true # Preferir la IP en lugar del hostname si tienes problemas de resolución DNS
-    # ip-address: 192.168.1.100 # Si quieres una IP específica
+    prefer-ip-address: true # Preferir la IP en lugar del hostname si tienes problemas de resolucion DNS
+    # ip-address: 192.168.1.100 # Si quieres una IP especifica
