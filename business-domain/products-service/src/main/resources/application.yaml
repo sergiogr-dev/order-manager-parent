@@ -6,11 +6,16 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     url: jdbc:postgresql://${MS_PRODUCTS:172.21.217.63}:5432/ms_products
     username: ${PG_USERNAME:postgres}
     password: ${PG_PASSWORD:strongpostgrespw}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8181/realms/order-manager-realm/protocol/openid-connect/certs"
 server:
   port: 8083
 eureka:
@@ -25,3 +30,11 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     prefer-ip-address: true
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+  use-management-port: false
+  paths-to-match: /**
+  override-with-generic-response: false

@@ -58,4 +58,4 @@ spring:
     user:
       name: ${EUREKA_USER:eureka}
       password: ${EUREKA_PASSWORD:password}
-#       roles: ADMIN # Rol del usuario
+#      roles: ADMIN # Rol del usuario

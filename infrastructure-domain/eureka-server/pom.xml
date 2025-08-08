@@ -21,17 +21,27 @@
     <!-- Dependencias específicas de este microservicio -->
     <dependencies>
 
-        <!-- ✅ Eureka Server (Spring Cloud Netflix) -->
+        <!-- Eureka Server (Spring Cloud Netflix) -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
-        <!-- ✅ Dependencia para pruebas unitarias con Spring Boot -->
+        <!-- Dependencia para pruebas unitarias con Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Seguridad -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
     </dependencies>
@@ -39,7 +49,7 @@
     <!-- Plugins de construcción específicos para este módulo -->
     <build>
         <plugins>
-            <!-- ✅ Empaqueta el proyecto como JAR ejecutable -->
+            <!-- Empaqueta el proyecto como JAR ejecutable -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
